@@ -1,6 +1,4 @@
 //code for transaction struct here
-
-#include <iostream>
 #include "transaction.h"
 
 using namespace std;

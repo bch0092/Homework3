@@ -1,6 +1,4 @@
 //implementation code for credit_card struct here
-
-#include <iostream>
 #include "credit_card.h"
 
 using namespace std;

@@ -1,6 +1,4 @@
 //code for person class here
-
-#include <iostream>
 #include "person.h"
 
 using namespace std;

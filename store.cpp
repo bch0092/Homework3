@@ -1,6 +1,4 @@
 //code for store class here
-
-#include <iostream>
 #include "store.h"
 
 using namespace std;

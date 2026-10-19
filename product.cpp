@@ -1,6 +1,4 @@
 //code for product struct here
-
-#include <iostream>
 #include "product.h"
 
 using namespace std;
