@@ -1,22 +1,29 @@
 CC = g++
 CFLAGS = -std=c++11 -Wall
-DEPS = starter.h
 
-# Default rule builds the final executable (let's call it bowling, or change it to match your assignment)
-all: bowling
+# List all your header files
+DEPS = address.h credit_card.h person.h product.h store.h transaction.h
 
-# Link the object files into the final executable
-bowling: starter.o main.o
-	$(CC) $(CFLAGS) starter.o main.o -o bowling
+# List all your implementation source files (including main.cpp)
+SRCS = main.cpp address.cpp credit_card.cpp person.cpp product.cpp store.cpp transaction.cpp
 
-# Compile starter.cpp into starter.o
-starter.o: starter.cpp $(DEPS)
-	$(CC) $(CFLAGS) -c starter.cpp
+# Automatically generate object file names from source file names
+OBJS = $(SRCS:.cpp=.o)
 
-# Compile main.cpp into main.o
-main.o: main.cpp $(DEPS)
-	$(CC) $(CFLAGS) -c main.cpp
+# Name of your final executable
+TARGET = store_program
 
-# Clean up build artifacts
+# Default target
+all: $(TARGET)
+
+# Link all object files together into the final executable
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -o $(TARGET)
+
+# Generic rule to compile any .cpp file into a .o file
+%.o: %.cpp $(DEPS)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+# Clean up build artifacts and output files
 clean:
-	rm -f *.o bowling a.out
+	rm -f $(OBJS) $(TARGET) a.out *.txt.bak
