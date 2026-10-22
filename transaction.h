@@ -17,6 +17,9 @@ struct transaction
 
 	//prints information about one transaction
 	std::string transaction_info();
+
+    //constructors//
+    transaction(int transaction_num, Person transaction_customer, product transaction_product, int transaction_quantity);
+    transaction();
 };
 #endif
-

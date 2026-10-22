@@ -25,63 +25,63 @@ Person::Person()
 
 //Sets name_ as name
 
-Person::name(string name)
+void Person::name(string name)
 {
     name_ = name;
 }
 
 //Returns name_.
 
-Person::name()
+string Person::name()
 {
     return name_;
 }
 
 //Sets phone_ as phone
 
-Person::phone(string phone)
+void Person::phone(string phone)
 {
     phone_ = phone;
 }
 
 //Returns phone_.
 
-Person::phone()
+string Person::phone()
 {
     return phone_;
 }
 
 //Sets person_address_ as person_address
 
-Person::person_address(address person_address)
+void Person::person_address(address person_address)
 {
     person_address_ = person_address;
 }
 
 //Returns person_address_.
 
-Person::person_address()
+address Person::person_address()
 {
     return person_address_;
 }
 
 //Sets person_credit_card_ as person_credit_card
 
-Person::person_credit_card(credit_card person_credit_card)
+void Person::person_credit_card(credit_card person_credit_card)
 {
     person_credit_card_ = person_credit_card;
 } 
 
 //Returns person_credit_card_.
 
-Person::person_credit_card()
+credit_card Person::person_credit_card()
 {
     return person_credit_card_;
 }
 
 //Returns a big, fat string with all our parameter info. Dadgum.
 
-Person::person_info()
+string Person::person_info()
 {
-    return "Name: " + name_ + "\nPhone: " + phone_ + "\nAddress: " + person_address_.address_info() + "\nCredit Card Info: " + person_credit_card_.credit_card_info();
+    return "\nName: " + name_ + "\nPhone: " + phone_ + "\nAddress: " + person_address_.address_info() + "\nCredit Card: " + person_credit_card_.credit_card_info() + "\n";
 }

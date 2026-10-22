@@ -16,9 +16,12 @@ struct address
 	string state;
 	string zip;
 
+    //constructors//
+    address(string, string, string, string, string);
+    address();
+
 	//prints address information
 	string address_info();		
 };
 
 #endif
-

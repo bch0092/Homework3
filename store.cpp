@@ -1,61 +1,71 @@
 //code for store class here
 #include "store.h"
 
+#include <string>
+#include <iomanip>
+#include <sstream>
+
 using namespace std;
 
+//we only declare Store() in store.h, so i dont think we need this//
+/*
 //Intializes a grand, new store with all our variables set as parameters.
 
-Store::Store(string store_name, string store_address, int num_customers, int num_products, int num_transactions)
+Store::Store(int num_customers, int num_products, int num_transactions)
 {
-    store_name_ = store_name;
-    store_address_ = store_address;
     num_customers_ = num_customers;
     num_products_ = num_products;
     num_transactions_ = num_transactions;
 }
+*/
 
 //Initializes a store with no name, address, no nothing. Dare I say, it's imaginary.
 
 Store::Store()
 {
-    store_name_ = "";
-    store_address_ = "";
     num_customers_ = 0;
     num_products_ = 0;
     num_transactions_ = 0;
 }
 
-Store::num_customers(int customer_count)
+void Store::num_customers(int customer_count)
 {
-    num_customers_ = customer_count;
+    if (customer_count >= 0 && customer_count <= 100) {
+        num_customers_ = customer_count;
+    }
 }
 
-Store::num_customers()
+int Store::num_customers()
 {
     return num_customers_;
 }
 
-Store::num_products(int product_count)
+void Store::num_products(int product_count)
 {
-    num_products_ = product_count;
+    if (product_count >= 0 && product_count <= 100) {
+        num_products_ = product_count;
+    }
 }
 
-Store::num_products()
+int Store::num_products()
 {
     return num_products_;
 }
 
-Store::num_transactions(int transaction_count)
+void Store::num_transactions(int transaction_count)
 {
-    num_transactions_ = transaction_count;
+    if (transaction_count >= 0 && transaction_count <= 100) {
+        num_transactions_ = transaction_count;
+    }
 }
 
-Store::num_transactions()
+
+int Store::num_transactions()
 {
     return num_transactions_;
 }
 
-Store::add_customer(Person customer)
+bool Store::add_customer(Person customer)
 {
 
     //Ensures we aren't crossing the customer limit
@@ -73,10 +83,10 @@ Store::add_customer(Person customer)
     }
 }   
 
-Store::update_customer(int index, Person customer)
+bool Store::update_customer(int index, Person customer)
 {
     //Updates the customer's info
-    if (index < num_customers_)
+    if (index >= 0 && index < num_customers_)
     {
         customers_[index] = customer;
         return true;
@@ -87,10 +97,10 @@ Store::update_customer(int index, Person customer)
     }
 }
 
-Store::get_customer(int index)
+Person Store::get_customer(int index)
 {
     //Returns the customer at the specified index
-    if (index < num_customers_)
+    if (index >= 0 && index < num_customers_)
     {
         return customers_[index];
     }
@@ -100,7 +110,7 @@ Store::get_customer(int index)
     }
 }
 
-Store::add_product(product item)
+bool Store::add_product(product item)
 {
     //Ensures we aren't crossing the product limit
     if (num_products_ < 100)
@@ -117,10 +127,10 @@ Store::add_product(product item)
     }
 }
 
-Store::get_product(int index)
+product Store::get_product(int index)
 {
     //Returns the product at the specified index
-    if (index < num_products_)
+    if (index >= 0 && index < num_products_)
     {
         return products_[index];
     }
@@ -130,7 +140,7 @@ Store::get_product(int index)
     }
 }
 
-Store::add_transaction(transaction ntransaction)
+bool Store::add_transaction(transaction ntransaction)
 {
     //Ensures we aren't crossing the transaction limit
     if (num_transactions_ < 100)
@@ -147,10 +157,10 @@ Store::add_transaction(transaction ntransaction)
     }
 }
 
-Store::get_transaction(int index)
+transaction Store::get_transaction(int index)
 {
     //Returns the transaction at the specified index
-    if (index < num_transactions_)
+    if (index >= 0 && index < num_transactions_)
     {
         return transactions_[index];
     }
@@ -160,8 +170,69 @@ Store::get_transaction(int index)
     }
 }
 
-Store::make_purchase(Person customer, product item, int quantity)
+bool Store::make_purchase(Person customer, product item, int quantity)
 {
+    //checks validity of quantity//
+    if (quantity > 0 && num_transactions_ < 100)
+    {
+        //finds customer//
+        int index = find_customer(customer);
+
+        if (index >= 0)
+        {
+            //stores customer in store//
+            Person stored_customer = customers_[index];
+
+            //copies customer's cc//
+            credit_card card = stored_customer.person_credit_card();
+
+            //calculates total cost//
+            double total_cost = item.price * quantity;
+
+            //attempts to make purchase//
+            if (card.make_purchase(total_cost))
+            {
+                //updates customer's cc//
+                stored_customer.person_credit_card(card);
+                customers_[index] = stored_customer;
+
+                //creates new transaction//
+                transaction new_transaction;
+                new_transaction.transaction_number = num_transactions_ + 1;
+                new_transaction.customer = stored_customer;
+                new_transaction.purchased_item = item;
+                new_transaction.quantity = quantity;
+
+                //adds transaction to store//
+                if (add_transaction(new_transaction))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                //insufficient funds//
+                return false;
+            }
+        }
+        else
+        {
+            //customer not found//
+            return false;
+        }
+    }
+    else
+    {
+        //invalid quantity or transaction limit reached//
+        return false;
+    }
+
+    //doesn't save the updated cc//
+    /*
     //Calculates the total cost of the purchase
     double total_cost = item.price * quantity;
 
@@ -183,36 +254,41 @@ Store::make_purchase(Person customer, product item, int quantity)
         //If unsuccessful, returns false(BROKE)
         return false;
     }
+    */
 }
 
-Store::product_info()
+string Store::product_info()
 {
     //Returns a string listing all products associated with this store
-    string info = "Products in Store:\n";
+    string info = "Products:\n";
     //For loop since we know the ending point/number of times it would need to iterate
     for (int i = 0; i < num_products_; i++)
     {
-        info += products_[i].product_info() + "\n";
+        info += products_[i].product_info() + "\n\n";
     }
     return info;
 }
 
-Store::transaction_info()
+string Store::transaction_info()
 {
     //Returns a string listing all transactions associated with this store
-    string info = "Transactions in Store:\n";
+    string info = "All Transactions:\n";
+    if (num_transactions_ > 0)
+    {
+        info += "\n";
+    }
     //Same deal as above, lowkey
     for (int i = 0; i < num_transactions_; i++)
     {
-        info += transactions_[i].transaction_info() + "\n";
+        info += transactions_[i].transaction_info() + "\n\n";
     }
     return info;
 }
 
-Store::customer_info()
+string Store::customer_info()
 {
     //Returns a string listing all customers associated with this store
-    string info = "Customers in Store:\n";
+    string info = "Customers:\n";
     //Love me some for loops(Why did I ever even do a comment for the first, gonna stop now)
     for (int i = 0; i < num_customers_; i++)
     {
@@ -221,17 +297,17 @@ Store::customer_info()
     return info;
 }
 
-Store::store_info()
+string Store::store_info()
 {
     //Returns a string listing all information about this store (transactions and products)
-    string info = "Store Name: " + store_name_ + "\nStore Address: " + store_address_ + "\n\n";
+    string info = "Store info:\n\n";
+    info += customer_info() + "\n";
     info += product_info() + "\n";
     info += transaction_info() + "\n";
-    info += customer_info() + "\n";
     return info;
 }
 
-Store::purchase_history(Person customer)
+string Store::purchase_history(Person customer)
 {
     //Searches through the transactions_[] and returns a string representing all transactions that belong to a specific customer
     string info = "Purchase History for " + customer.name() + ":\n";
@@ -247,7 +323,7 @@ Store::purchase_history(Person customer)
     return info;
 }
 
-Store::find_customer(Person customer)
+int Store::find_customer(Person customer)
 {
     //Given a customer, returns the index in the customer_[] where that customer is located
     for (int i = 0; i < num_customers_; i++)
@@ -260,7 +336,3 @@ Store::find_customer(Person customer)
     //If not found, returns -1
     return -1;
 }
-
-
-
-

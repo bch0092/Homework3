@@ -3,12 +3,12 @@
 
 using namespace std;
 
-transaction::transaction(int transaction_number, Person customer, product purchased_item, int quantity)
+transaction::transaction(int transaction_num, Person transaction_customer, product transaction_product, int transaction_quantity)
 {
-    transaction_number = transaction_number;
-    customer = customer;
-    purchased_item = purchased_item;
-    quantity = quantity;
+    transaction_number = transaction_num;
+    customer = transaction_customer;
+    purchased_item = transaction_product;
+    quantity = transaction_quantity;
 }
 
 transaction::transaction()
@@ -19,9 +19,9 @@ transaction::transaction()
     quantity = 0;
 }
 
-transaction::transaction_info()
+string transaction::transaction_info()
 {
-    return "Transaction Number: " + to_string(transaction_number) + "\nCustomer Info:\n" + customer.person_info() + "\nPurchased Item Info:\n" + purchased_item.product_info() + "\nQuantity: " + to_string(quantity);
+    return "Transaction #: " + to_string(transaction_number) + "\nCustomer:" + customer.person_info() + "Product:" + purchased_item.product_info() + "\nQuantity: " + to_string(quantity) + "\n";
 }  
 
 //All this is very similar to previous cpp files so I'm not gonna leave a ton of comments here

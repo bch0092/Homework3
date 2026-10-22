@@ -1,6 +1,9 @@
 //code for product struct here
 #include "product.h"
 
+#include <iomanip>
+#include <sstream>
+
 using namespace std;
 
 //This method initializes a new instance from the product class with the given variables.
@@ -23,7 +26,10 @@ product::product()
 
 //Returns a nice, pretty string with all parameters.
 
-product::product_info()
+string product::product_info()
 {
-    return "Product Name: " + name + "\nDescription: " + description + "\nPrice: $" + to_string(price);
+    std::stringstream output;
+    output << std::fixed << std::setprecision(2);
+    output << "\nProduct Name: " << name << "\nDescription: " << description << "\nPrice: $" << price;
+    return output.str();
 }

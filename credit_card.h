@@ -23,6 +23,10 @@ struct credit_card
 
 	//method to print credit card details
 	std::string credit_card_info();
+
+    //constructors//
+    credit_card();
+    credit_card(int cardNum, double cardLimit, double cardBalance);
 };
 
 

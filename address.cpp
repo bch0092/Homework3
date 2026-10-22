@@ -18,16 +18,16 @@ address::address(string add_line_1, string add_line_2, string add_city, string a
 
 address::address()
 {
-    address_line1 = add_line_1;
-    address_line2 = add_line_2;
-    city = add_city;
-    state = add_state;
-    zip = add_zip;
+    address_line1 = "";
+    address_line2 = "";
+    city = "";
+    state = "";
+    zip = "";
 }
 
 //Returns an elegant string with all our intialized info.
 
-address::address_info()
+string address::address_info()
 {
-    return "Address Line 1: " + address_line1 + "\nAddress Line 2: " + address_line2 + "\nCity: " + city + "\nState: " + state + "\nZip Code: " + zip;
+    return "\n" + address_line1 + "\n" + address_line2 + "\n" + city + ", " + state + "\n" + zip ;
 }

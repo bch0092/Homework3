@@ -14,6 +14,9 @@ struct product
 
 	//prints information about one transaction
 	std::string product_info();
+
+    //constructors//
+    product(std::string product_name, std::string product_description, double product_price); 
+    product();
 };
 #endif
-
